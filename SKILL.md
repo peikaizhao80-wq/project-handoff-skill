@@ -1,6 +1,6 @@
 ---
 name: project-handoff
-description: Create and consume structured project handoff packets between agents. Use when Codex finishes a project, task, bugfix, feature branch, or investigation and needs to leave a precise progress summary for the next agent, or when a new agent needs to resume from the latest handoff with minimal rediscovery. Trigger on requests to write a handoff, summarize project progress, record current status, continue from previous work, read the last agent's notes, resume an interrupted task, or bootstrap context in an unfamiliar workspace.
+description: Create and consume structured project handoff packets between agents. Use when any coding agent finishes a project, task, bugfix, feature branch, or investigation and needs to leave a precise progress summary for the next agent, or when a new agent needs to resume from the latest handoff with minimal rediscovery. Trigger on requests to write a handoff, summarize project progress, record current status, continue from previous work, read the last agent's notes, resume an interrupted task, or bootstrap context in an unfamiliar workspace.
 ---
 
 # Project Handoff
@@ -14,6 +14,12 @@ Use this skill in two modes:
 
 Prefer a stable handoff location inside the project so future agents do not need to guess where context lives.
 
+Treat the handoff packet as an agent-neutral protocol:
+
+1. Keep the packet format plain Markdown plus a small JSON manifest.
+2. Make sure another agent can read it without this skill, this repo, or Codex-specific memory.
+3. Use tooling to generate the packet if helpful, but keep the packet itself portable.
+
 ## Canonical Location
 
 Use the bundled script to resolve the handoff directory:
@@ -26,7 +32,8 @@ python scripts/handoff_packet.py prepare-takeover --project-root <PROJECT_ROOT>
 Directory selection rules:
 
 1. Use `<PROJECT_ROOT>/work/agent-handoff/` when `<PROJECT_ROOT>/work/` already exists.
-2. Otherwise use `<PROJECT_ROOT>/.codex-handoff/`.
+2. Otherwise use `<PROJECT_ROOT>/.agent-handoff/`.
+3. If an older `<PROJECT_ROOT>/.codex-handoff/` already exists, treat it as a legacy location and keep using it until explicitly migrated.
 
 Keep these files there:
 
@@ -160,3 +167,7 @@ Use this template as the starting structure for each snapshot.
 ### `references/handoff-checklist.md`
 
 Read this when you need a stricter checklist for closeout quality or takeover verification.
+
+### `references/agent-neutral-contract.md`
+
+Read this when you need to preserve compatibility across different agents, orchestrators, or local workflows.

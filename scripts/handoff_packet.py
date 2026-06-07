@@ -22,7 +22,13 @@ def resolve_handoff_dir(project_root: Path) -> Path:
     work_dir = project_root / "work"
     if work_dir.exists() and work_dir.is_dir():
         return work_dir / "agent-handoff"
-    return project_root / ".codex-handoff"
+    agent_dir = project_root / ".agent-handoff"
+    legacy_dir = project_root / ".codex-handoff"
+    if agent_dir.exists():
+        return agent_dir
+    if legacy_dir.exists():
+        return legacy_dir
+    return agent_dir
 
 
 def template_path() -> Path:
