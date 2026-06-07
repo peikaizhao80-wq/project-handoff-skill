@@ -1,0 +1,4 @@
+interface:
+  display_name: "Project Handoff"
+  short_description: "Write and resume structured project handoffs."
+  default_prompt: "Use this skill to write a fresh project handoff at the end of work or to resume from the latest handoff at the start of work."
